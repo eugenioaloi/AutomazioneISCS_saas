@@ -67,28 +67,43 @@
   </template>
   
   <script>
-  export default {
-    data: () => ({
-      header: 'Accedi al laboratorio',
-      nomeUt: "",
-      password: "",
-      visible: false,
-      rules:{
-        nomeUtReq: req => !!req || "E' richiesto il nome utente",
-        passwordReq: req => !!req || "E' richiesta la password"
-      }
-    }),
-    methods:{
-      handleLogin(){
-        console.log("nomeUt ", this.nomeUt);
-        console.log("psw ", this.password);
+    export default {
+      data: () => ({
+        header: 'Accedi al laboratorio',
+        nomeUt: "",
+        password: "",
+        visible: false,
+        itemEndpoint : 'http://localhost:8080//gestioneUtente/getUtente/',
+        
+        rules:{
+          nomeUtReq: req => !!req || "E' richiesto il nome utente",
+          passwordReq: req => !!req || "E' richiesta la password"
+        }
+      }),
+
+      methods:{
+        handleLogin(){
+          const url = this.itemEndpoint + this.nomeUt + '/' + this.password;
+          fetch(url, {
+            method: 'GET',
+            mode: 'no-cors',
+          })
+          .then(response =>{
+            console.log(response);
+          })
+          .catch(error => {
+            console.error('Error:', error);
+          });
+        },
+        
       },
       
-    },
-    computed:{
-      formValid(){
-        return this.nomeUt !="" && this.password !=""?true:false
-      },
+      computed:{
+        formValid(){
+          return this.nomeUt !="" && this.password !=""?true:false
+        },
+      }
+      
     }
-  }
+ 
   </script>
